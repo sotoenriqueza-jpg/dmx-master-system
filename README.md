@@ -1,3 +1,5 @@
+![v18.0.0](https://github.com/sotoenriqueza-jpg/dmx-master-system/releases/tag/v18.0.0)
+## Última versión estable: v18.0.0
 # DMX MASTER
 
 Sistema ERP ligero basado en Google Apps Script para gestión comercial multi vendedor.
