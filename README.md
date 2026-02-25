@@ -1,25 +1,25 @@
-# DMX MASTER SYSTEM
-Plataforma Distribuida de Inteligencia Operativa
+# DMX MASTER
 
-## 🧠 Arquitectura
+Sistema ERP ligero basado en Google Apps Script para gestión comercial multi vendedor.
 
-Sistema basado en Google Apps Script que opera bajo un modelo distribuido:
+## 🚀 Características
+- Gestión centralizada de ventas
+- Control de inventario con bloqueo
+- CRM dinámico
+- Reportes automáticos
+- Generación de PDF
+- Sistema multi vendedor
 
-- Nodos vendedores autónomos
-- Matriz central consolidada
-- Comunicación vía Web App (REST JSON)
+## 🏗 Arquitectura
+[explicación de centro, matriz, vendedores]
 
-## 🏗 Componentes
+## 📊 Flujo de Datos
+Vendedor → Web App → Matriz → Sheets → Reportes
 
-### 📍 Nodos Vendedores
-Lógica local de validación, generación de ID, cálculo y envío de datos.
+## 🔐 Seguridad
+Validación de origen y control de concurrencia
 
-### 🧠 Matriz Central
-Procesamiento consolidado, validación maestra y respuesta sincronizada.
-
-## 🔄 Flujo
-
-Nodo → Web App → Matriz → Respuesta → Confirmación
-
-## 🎯 Objetivo
-Escalar operación comercial sin perder control centralizado.
+## 📌 Roadmap
+- Dashboard analítico avanzado
+- IA predictiva
+- Migración a backend escalable
