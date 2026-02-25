@@ -2,110 +2,102 @@
 <html>
 <head>
   <base target="_top">
+  <meta charset="UTF-8">
+  <title>DMX MASTER</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f4f6f9;
-      padding: 20px;
+      margin: 0;
+      padding: 30px;
     }
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      max-width: 500px;
+    .container {
+      max-width: 700px;
       margin: auto;
     }
 
-    h2 {
+    .card {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    h1 {
       margin-top: 0;
-      text-align: center;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin: 8px 0;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #1f3c88;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: #162d63;
+      color: #1f2937;
     }
 
     .status {
-      margin-top: 12px;
-      text-align: center;
+      padding: 12px;
+      border-radius: 6px;
       font-weight: bold;
-      min-height: 20px;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .active {
+      background: #e6f4ea;
+      color: #1e7e34;
+    }
+
+    button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      background: #2563eb;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e4fd8;
     }
   </style>
 </head>
+
 <body>
 
-<div class="card">
-  <h2>DMX MASTER - Registro de Venta</h2>
+  <div class="container">
 
-  <input type="text" id="vendedor" placeholder="Nombre del vendedor">
-  <input type="text" id="idCte" placeholder="ID Cliente">
-  <input type="text" id="nombre" placeholder="Nombre Cliente">
-  <input type="text" id="telefono" placeholder="Teléfono">
-  <input type="text" id="producto" placeholder="Producto">
-  <input type="number" id="cantidad" placeholder="Cantidad">
-  <input type="number" id="precio" placeholder="Precio Unitario">
+    <div class="card">
+      <h1>DMX MASTER</h1>
+      <p>Sistema Central de Gestión Comercial</p>
 
-  <select id="envio">
-    <option value="Local">Local</option>
-    <option value="Foráneo">Foráneo</option>
-  </select>
+      <div class="status active">
+        Sistema Activo y Conectado
+      </div>
+    </div>
 
-  <button onclick="enviar()">Registrar Venta</button>
+    <div class="card">
+      <h3>Verificación del Sistema</h3>
+      <p>Haz clic para comprobar comunicación con la matriz.</p>
 
-  <div class="status" id="status"></div>
-</div>
+      <button onclick="verificarSistema()">Verificar Conexión</button>
 
-<script>
-function enviar() {
+      <div id="resultado" style="margin-top:15px;"></div>
+    </div>
 
-  const payload = {
-    vendedor: document.getElementById("vendedor").value,
-    idCte: document.getElementById("idCte").value,
-    nombre: document.getElementById("nombre").value,
-    telefono: document.getElementById("telefono").value,
-    producto: document.getElementById("producto").value,
-    cantidad: parseFloat(document.getElementById("cantidad").value),
-    precio: parseFloat(document.getElementById("precio").value),
-    envio: document.getElementById("envio").value
-  };
+  </div>
 
-  document.getElementById("status").innerText = "Enviando...";
-
-  google.script.run
-    .withSuccessHandler(function(response) {
-      document.getElementById("status").innerText = response.message;
-
-      // Limpia campos después de éxito
-      document.querySelectorAll("input").forEach(i => i.value = "");
-    })
-    .withFailureHandler(function(error) {
-      document.getElementById("status").innerText = "Error en envío";
-    })
-    .procesarDesdeUI(payload);
-}
-</script>
+  <script>
+    function verificarSistema() {
+      google.script.run
+        .withSuccessHandler(function(response) {
+          document.getElementById("resultado").innerHTML =
+            "<div class='status active'>" + response + "</div>";
+        })
+        .withFailureHandler(function(error) {
+          document.getElementById("resultado").innerHTML =
+            "<div class='status' style='background:#fdecea;color:#b91c1c;'>Error: " + error.message + "</div>";
+        })
+        .verificarEstado();  // Esta función debe existir en main-matriz.js
+    }
+  </script>
 
 </body>
 </html>
