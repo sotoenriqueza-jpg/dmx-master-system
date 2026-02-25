@@ -1,69 +1,36 @@
-// =====================================================
+// ==========================================
 // DMX MASTER - MATRIZ CENTRAL
-// Web App receptora de nodos vendedores
-// =====================================================
+// Punto de entrada del sistema
+// ==========================================
 
 
-// ================= ENTRY POINT =================
+// 1️⃣ CARGA LA INTERFAZ WEB
+function doGet() {
+  return HtmlService
+    .createHtmlOutputFromFile('centro/ui')
+    .setTitle('DMX MASTER');
+}
+
+
+// 2️⃣ RECIBE DATOS VÍA POST (API externa o vendedores distribuidos)
 function doPost(e) {
-  const data = JSON.parse(e.postData.contents);
-  return procesarOperacion(data);
-}
+  try {
+    const data = JSON.parse(e.postData.contents);
+    return procesarOperacionCentral(data);
 
-
-// ================= MOTOR CENTRAL =================
-function procesarOperacion(payload) {
-
-  if (!validarPayload(payload)) {
-    return respuestaError("Datos incompletos");
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        status: "error",
+        message: "Error en la matriz",
+        detail: error.toString()
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
   }
-
-  registrarOperacion(payload);
-
-  return respuestaOK("Operación registrada");
 }
 
 
-// ================= VALIDACIÓN =================
-function validarPayload(p) {
-  return p.vendedor && p.producto && p.cantidad > 0 && p.precio > 0;
-}
-
-
-// ================= CONSOLIDACIÓN =================
-function registrarOperacion(p) {
-
-  const sheet = SpreadsheetApp.getActiveSpreadsheet()
-                .getSheetByName("CONSOLIDADO");
-
-  sheet.appendRow([
-    new Date(),
-    p.vendedor,
-    p.idCte,
-    p.nombre,
-    p.producto,
-    p.cantidad,
-    p.precio,
-    p.envio
-  ]);
-}
-
-
-// ================= RESPUESTAS =================
-function respuestaOK(msg) {
-  return ContentService
-    .createTextOutput(JSON.stringify({
-      status: "success",
-      message: msg
-    }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-function respuestaError(msg) {
-  return ContentService
-    .createTextOutput(JSON.stringify({
-      status: "error",
-      message: msg
-    }))
-    .setMimeType(ContentService.MimeType.JSON);
+// 3️⃣ MÉTODO INTERNO PARA LA UI (evita usar doPost desde el frontend)
+function procesarDesdeUI(payload) {
+  return procesarOperacionCentral(payload);
 }
